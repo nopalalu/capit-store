@@ -4,6 +4,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Mail, Phone, MapPin } from "lucide-react";
 import emailjs from "@emailjs/browser";
+import Reveal from "@/components/Reveal";
+import Faq from "@/components/Faq";
+import BackToTop from "@/components/BackToTop";
 
 const ContactUs = () => {
     const [formData, setFormData] = useState({
@@ -51,14 +54,18 @@ const ContactUs = () => {
         <>
             <Navbar />
             <div className="px-6 md:px-16 lg:px-32 pt-14 pb-20 bg-white">
-                <div className="text-center mb-14 max-w-2xl mx-auto">
-                    <span className="inline-flex items-center rounded-full bg-emerald-700/10 text-emerald-800 text-xs font-semibold px-3 py-1 mb-4">
-                        Get in touch
-                    </span>
-                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-neutral-900">Contact Us</h1>
-                    <p className="text-neutral-500 mt-3">We'd love to hear from you. Please reach out with any questions or feedback.</p>
-                </div>
+                <Reveal>
+                    <div className="mb-14 max-w-2xl">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-800 mb-3 flex items-center gap-2.5">
+                            <span className="inline-block w-7 h-[2px] bg-emerald-800 rounded-full" />
+                            Hubungi kami
+                        </p>
+                        <h1 className="font-display text-4xl md:text-[52px] leading-[1.05] font-semibold tracking-tight text-neutral-900">Ada yang bisa <em className="text-emerald-800">kami bantu?</em></h1>
+                        <p className="text-neutral-500 mt-4">Tanya stok, ukuran, atau pesananmu — kami balas secepatnya.</p>
+                    </div>
+                </Reveal>
 
+                <Reveal>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
                     <form onSubmit={handleSubmit} className="bg-neutral-50 rounded-2xl border border-neutral-200/70 p-7 space-y-5">
                         <div>
@@ -147,8 +154,14 @@ const ContactUs = () => {
                         </div>
                     </div>
                 </div>
+                </Reveal>
+
+                <div className="max-w-5xl mx-auto mt-16">
+                    <Faq />
+                </div>
             </div>
             <Footer />
+            <BackToTop />
         </>
     );
 };

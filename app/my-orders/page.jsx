@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Reveal from "@/components/Reveal";
 
 const MyOrders = () => {
 
@@ -42,7 +43,9 @@ const MyOrders = () => {
             <Navbar />
             <div className="px-6 md:px-16 lg:px-32 py-10 min-h-screen bg-neutral-50">
                 <div className="max-w-5xl mx-auto">
-                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-neutral-900 mb-8">My Orders</h1>
+                    <Reveal>
+                        <h1 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 mb-8">Pesanan <em className="text-emerald-800">kamu.</em></h1>
+                    </Reveal>
                     {loading ? <Loading /> : orders.length === 0 ? (
                         <div className="bg-white rounded-2xl border border-neutral-200 p-12 text-center">
                             <p className="text-lg font-semibold text-neutral-900">No orders yet</p>
@@ -57,7 +60,8 @@ const MyOrders = () => {
                     ) : (
                         <div className="space-y-4">
                             {orders.map((order, index) => (
-                                <div key={index} className="bg-white rounded-2xl border border-neutral-200 p-5 md:p-6">
+                                <Reveal key={index} delay={Math.min(index * 0.06, 0.3)}>
+                                <div className="bg-white rounded-2xl border border-neutral-200 p-5 md:p-6 hover:shadow-md transition-shadow">
                                     <div className="flex flex-col md:flex-row gap-5 md:items-center justify-between">
                                         <div className="flex gap-4 items-center min-w-0">
                                             <div className="w-14 h-14 rounded-xl bg-neutral-100 flex items-center justify-center shrink-0">
@@ -91,6 +95,7 @@ const MyOrders = () => {
                                         </div>
                                     </div>
                                 </div>
+                                </Reveal>
                             ))}
                         </div>
                     )}

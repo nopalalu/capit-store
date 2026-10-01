@@ -8,6 +8,8 @@ import { useParams } from "next/navigation";
 import Loading from "@/components/Loading";
 import { useAppContext } from "@/context/AppContext";
 import React from "react";
+import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 
 const Product = () => {
     const { id } = useParams();
@@ -42,15 +44,21 @@ const Product = () => {
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
-                    <div>
-                        <div className="rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/60 mb-4">
-                            <Image
-                                src={mainImage || productData.image[0]}
-                                alt={productData.name}
-                                className="w-full aspect-square object-cover"
-                                width={1280}
-                                height={720}
-                            />
+                    <Reveal>
+                        <div className="group rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200/60 mb-4">
+                            <motion.div
+                                whileHover={{ scale: 1.06 }}
+                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                className="w-full aspect-square"
+                            >
+                                <Image
+                                    src={mainImage || productData.image[0]}
+                                    alt={productData.name}
+                                    className="w-full h-full object-cover"
+                                    width={1280}
+                                    height={720}
+                                />
+                            </motion.div>
                         </div>
 
                         <div className="grid grid-cols-4 gap-3">
@@ -73,9 +81,9 @@ const Product = () => {
                                 );
                             })}
                         </div>
-                    </div>
+                    </Reveal>
 
-                    <div className="flex flex-col">
+                    <Reveal delay={0.1} className="flex flex-col">
                         <span className="inline-flex w-fit items-center rounded-full bg-neutral-100 text-neutral-600 text-xs font-semibold px-3 py-1 mb-3">
                             {productData.category}
                         </span>
@@ -112,7 +120,8 @@ const Product = () => {
                         <div className="border-t border-neutral-200 my-8" />
 
                         <div className="flex flex-col sm:flex-row items-stretch gap-3">
-                            <button
+                            <motion.button
+                                whileTap={inStock ? { scale: 0.96 } : {}}
                                 onClick={() => addToCart(productData._id)}
                                 disabled={!inStock}
                                 className={`flex-1 py-3.5 transition font-semibold rounded-xl text-sm
@@ -122,8 +131,9 @@ const Product = () => {
                                     }`}
                             >
                                 Add to Cart
-                            </button>
-                            <button
+                            </motion.button>
+                            <motion.button
+                                whileTap={inStock ? { scale: 0.96 } : {}}
                                 onClick={() => {
                                     addToCart(productData._id);
                                     router.push("/cart");
@@ -136,24 +146,29 @@ const Product = () => {
                                     }`}
                             >
                                 Buy now
-                            </button>
+                            </motion.button>
                         </div>
-                    </div>
+                    </Reveal>
                 </div>
 
                 <div className="mt-20">
-                    <div className="flex items-end justify-between mb-8">
-                        <div>
-                            <p className="text-2xl font-bold tracking-tight text-neutral-900">Featured Products</p>
-                            <p className="text-sm text-neutral-500 mt-1.5">You might also like</p>
+                    <Reveal>
+                        <div className="flex items-end justify-between mb-8">
+                            <div>
+                                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-emerald-800 mb-2.5 flex items-center gap-2.5">
+                                    <span className="inline-block w-7 h-[2px] bg-emerald-800 rounded-full" />
+                                    Lanjut belanja
+                                </p>
+                                <p className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-neutral-900">Mungkin kamu <em className="text-emerald-800">juga suka.</em></p>
+                            </div>
+                            <button
+                                onClick={() => router.push('/all-products')}
+                                className="hidden sm:block text-sm font-semibold text-neutral-700 hover:text-emerald-800 transition shrink-0"
+                            >
+                                See all →
+                            </button>
                         </div>
-                        <button
-                            onClick={() => router.push('/all-products')}
-                            className="hidden sm:block text-sm font-semibold text-neutral-700 hover:text-emerald-800 transition shrink-0"
-                        >
-                            See all →
-                        </button>
-                    </div>
+                    </Reveal>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 w-full">
                         {products.slice(0, 5).map((product, index) => (
                             <ProductCard key={index} product={product} />

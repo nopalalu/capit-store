@@ -1,17 +1,34 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { assets, BagIcon, BoxIcon, CartIcon } from "@/assets/assets";
 import Link from "next/link";
 import { useAppContext } from "@/context/AppContext";
 import Image from "next/image";
 import { useClerk, UserButton } from "@clerk/nextjs";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const { openSignIn } = useClerk();
   const { user, isSeller, router, getCartCount } = useAppContext();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const ticking = useRef(false);
 
   const cartCount = getCartCount();
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (ticking.current) return;
+      ticking.current = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 24);
+        ticking.current = false;
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const links = [
     { label: "Home", href: "/" },
@@ -21,8 +38,13 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-neutral-200">
-      <nav className="flex items-center justify-between px-6 md:px-16 lg:px-32 h-16">
+    <header
+      className={`sticky top-0 z-50 backdrop-blur-md border-b transition-all duration-300 ${
+        scrolled
+          ? "bg-white/95 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)] border-neutral-200"
+          : "bg-white/85 border-neutral-200/70"
+      }`}
+    >      <nav className="flex items-center justify-between px-6 md:px-16 lg:px-32 h-16">
         <button
           onClick={() => router.push("/")}
           className="flex items-center gap-2.5 shrink-0"
@@ -64,9 +86,15 @@ const Navbar = () => {
           >
             <CartIcon />
             {cartCount > 0 && (
-              <span className="absolute top-0.5 right-0.5 min-w-5 h-5 px-1 rounded-full bg-emerald-700 text-white text-[11px] font-semibold flex items-center justify-center">
+              <motion.span
+                key={cartCount}
+                initial={{ scale: 0.3 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 550, damping: 18 }}
+                className="absolute top-0.5 right-0.5 min-w-5 h-5 px-1 rounded-full bg-emerald-700 text-white text-[11px] font-semibold flex items-center justify-center"
+              >
                 {cartCount}
-              </span>
+              </motion.span>
             )}
           </button>
           {user ? (
@@ -113,9 +141,15 @@ const Navbar = () => {
           >
             <CartIcon />
             {cartCount > 0 && (
-              <span className="absolute top-0.5 right-0.5 min-w-5 h-5 px-1 rounded-full bg-emerald-700 text-white text-[11px] font-semibold flex items-center justify-center">
+              <motion.span
+                key={cartCount}
+                initial={{ scale: 0.3 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 550, damping: 18 }}
+                className="absolute top-0.5 right-0.5 min-w-5 h-5 px-1 rounded-full bg-emerald-700 text-white text-[11px] font-semibold flex items-center justify-center"
+              >
                 {cartCount}
-              </span>
+              </motion.span>
             )}
           </button>
           {user ? (
