@@ -105,6 +105,50 @@ export const syncAllUsersScheduled = inngest.createFunction(
   }
 );
 
+// Realtime sync via Inngest webhook (Clerk -> inn.gs URL -> this function).
+// Listens to the default webhook transform output ("webhook/request.received")
+// and extracts the Clerk payload defensively, so no dashboard transform
+// code is needed.
+export const syncUserFromWebhook = inngest.createFunction(
+  { id: "sync-user-from-webhook" },
+  { event: "webhook/request.received" },
+  async ({ event }) => {
+    const payload = extractClerkPayload(event.data);
+    if (!payload) return { success: false, reason: "not a clerk user event" };
+    const u = payload.data;
+    await connDB();
+    if (payload.type === "user.deleted") {
+      await User.findByIdAndDelete(u.id);
+      return { success: true, type: payload.type, id: u.id };
+    }
+    await User.findByIdAndUpdate(
+      u.id,
+      {
+        email: u.email_addresses?.[0]?.email_address ?? "",
+        name: `${u.first_name ?? ""} ${u.last_name ?? ""}`.trim() || "User",
+        imageUrl: u.image_url ?? "",
+      },
+      { upsert: true }
+    );
+    return { success: true, type: payload.type, id: u.id };
+  }
+);
+
+function extractClerkPayload(data) {
+  const isClerkEvent =
+    (v) =>
+      v?.object === "event" &&
+      typeof v?.type === "string" &&
+      v.type.startsWith("user.");
+  if (isClerkEvent(data)) return data;
+  if (data && typeof data === "object") {
+    for (const v of Object.values(data)) {
+      if (isClerkEvent(v)) return v;
+    }
+  }
+  return null;
+}
+
 // Inngest to create user order in db
 export const createUserOrder = inngest.createFunction(
   {
