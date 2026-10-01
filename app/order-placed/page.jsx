@@ -1,7 +1,5 @@
 'use client'
-import { assets } from '@/assets/assets'
 import { useAppContext } from '@/context/AppContext'
-import Image from 'next/image'
 import { useEffect } from 'react'
 
 const OrderPlaced = () => {
@@ -15,12 +13,19 @@ const OrderPlaced = () => {
   }, [])
 
   return (
-    <div className='h-screen flex flex-col justify-center items-center gap-5'>
-      <div className="flex justify-center items-center relative">
-        <Image className="absolute p-5" src={assets.checkmark} alt='' />
-        <div className="animate-spin rounded-full h-24 w-24 border-4 border-t-green-300 border-gray-200"></div>
+    <div className='min-h-screen bg-neutral-50 flex flex-col justify-center items-center gap-6 px-6'>
+      <div className="w-24 h-24 rounded-full bg-emerald-700 flex items-center justify-center">
+        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
       </div>
-      <div className="text-center text-2xl font-semibold">Order Placed Successfully</div>
+      <div className="text-center">
+        <p className="text-2xl font-bold tracking-tight text-neutral-900">Order Placed Successfully</p>
+        <p className="text-sm text-neutral-500 mt-2">Thank you for shopping with us. Redirecting to your orders…</p>
+      </div>
+      <div className="w-48 h-1 rounded-full bg-neutral-200 overflow-hidden">
+        <div className="h-full bg-emerald-700 rounded-full animate-pulse" style={{ width: '60%' }}></div>
+      </div>
     </div>
   )
 }

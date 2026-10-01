@@ -37,7 +37,7 @@ const ContactUs = () => {
             process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
         )
             .then(() => {
-                // success logic
+                setSubmitted(true);
             })
             .catch((error) => {
                 // error handling
@@ -45,88 +45,100 @@ const ContactUs = () => {
 
     };
 
+    const inputCls = "w-full px-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-emerald-700/30 focus:border-emerald-700 transition";
 
     return (
         <>
             <Navbar />
-            <div className="px-6 md:px-16 lg:px-32 pt-14 pb-20">
-                <div className="text-center mb-12">
-                    <h1 className="text-3xl font-semibold text-gray-50">Contact <span className="text-sky-400">Us</span></h1>
-                    <p className="text-gray-100 mt-2">We'd love to hear from you. Please reach out with any questions or feedback.</p>
-                    <div className="w-24 h-0.5 bg-sky-400 mx-auto mt-2"></div>
+            <div className="px-6 md:px-16 lg:px-32 pt-14 pb-20 bg-white">
+                <div className="text-center mb-14 max-w-2xl mx-auto">
+                    <span className="inline-flex items-center rounded-full bg-emerald-700/10 text-emerald-800 text-xs font-semibold px-3 py-1 mb-4">
+                        Get in touch
+                    </span>
+                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-neutral-900">Contact Us</h1>
+                    <p className="text-neutral-500 mt-3">We'd love to hear from you. Please reach out with any questions or feedback.</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+                    <form onSubmit={handleSubmit} className="bg-neutral-50 rounded-2xl border border-neutral-200/70 p-7 space-y-5">
                         <div>
-                            <label className="block text-gray-100 mb-1">Name</label>
+                            <label className="block text-sm font-semibold text-neutral-700 mb-1.5">Name</label>
                             <input
                                 type="text"
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                placeholder="Your name"
+                                className={inputCls}
                             />
                         </div>
                         <div>
-                            <label className="block text-gray-100 mb-1">Email</label>
+                            <label className="block text-sm font-semibold text-neutral-700 mb-1.5">Email</label>
                             <input
                                 type="email"
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                placeholder="you@example.com"
+                                className={inputCls}
                             />
                         </div>
                         <div>
-                            <label className="block text-gray-100 mb-1">Message</label>
+                            <label className="block text-sm font-semibold text-neutral-700 mb-1.5">Message</label>
                             <textarea
                                 name="message"
                                 value={formData.message}
                                 onChange={handleChange}
                                 required
                                 rows="5"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                placeholder="How can we help?"
+                                className={`${inputCls} resize-none`}
                             ></textarea>
                         </div>
                         <button
                             type="submit"
-                            className="bg-sky-500 text-white px-6 py-2 rounded-md hover:bg-gray-50 hover:text-slate-950 transition"
+                            className="w-full bg-neutral-900 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-emerald-800 transition"
                         >
                             Send Message
                         </button>
-                        {submitted && <p className="text-green-600 mt-2">Thank you for contacting us!</p>}
+                        {submitted && <p className="text-emerald-700 text-sm font-medium">Thank you for contacting us!</p>}
                     </form>
 
-                    <div className="flex flex-col justify-center text-gray-700 space-y-6">
+                    <div className="flex flex-col justify-center space-y-6">
                         <div className="flex items-start gap-4">
-                            <MapPin className="text-sky-400 mt-1" />
+                            <div className="w-11 h-11 rounded-xl bg-neutral-900 text-white flex items-center justify-center shrink-0">
+                                <MapPin className="w-5 h-5" />
+                            </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-200">Address</h3>
-                                <p className="text-gray-300">Universitas Amikom Purwokerto, Jl. Letjend Pol. Soemarto No.126, Watumas</p>
+                                <h3 className="font-bold text-neutral-900">Address</h3>
+                                <p className="text-sm text-neutral-500 mt-1">Universitas Amikom Purwokerto, Jl. Letjend Pol. Soemarto No.126, Watumas</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
-                            <Mail className="text-sky-400 mt-1" />
+                            <div className="w-11 h-11 rounded-xl bg-neutral-900 text-white flex items-center justify-center shrink-0">
+                                <Mail className="w-5 h-5" />
+                            </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-200">Email</h3>
-                                <p className="text-gray-300">ndawegstudio@gmail.com</p>
+                                <h3 className="font-bold text-neutral-900">Email</h3>
+                                <p className="text-sm text-neutral-500 mt-1">ndawegstudio@gmail.com</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
-                            <Phone className="text-sky-400 mt-1" />
+                            <div className="w-11 h-11 rounded-xl bg-neutral-900 text-white flex items-center justify-center shrink-0">
+                                <Phone className="w-5 h-5" />
+                            </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-200">Phone</h3>
-                                <p className="text-gray-300">+62 8123456789</p>
+                                <h3 className="font-bold text-neutral-900">Phone</h3>
+                                <p className="text-sm text-neutral-500 mt-1">+62 8123456789</p>
                             </div>
                         </div>
-                        <div className="mt-8">
+                        <div className="rounded-2xl overflow-hidden border border-neutral-200 mt-2">
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63318.50335656835!2d109.20171703250966!3d-7.426621297351276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e65416ee4eb1f5d%3A0x70d56f6a963ec202!2sUniversitas%20Amikom%20Purwokerto!5e0!3m2!1sen!2sid!4v1715889140595!5m2!1sen!2sid"
                                 width="100%"
-                                height="300"
+                                height="260"
                                 style={{ border: 0 }}
                                 allowFullScreen=""
                                 loading="lazy"

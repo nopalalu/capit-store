@@ -1,8 +1,6 @@
 'use client'
-import { assets } from "@/assets/assets";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Image from "next/image";
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import axios from "axios";
@@ -36,70 +34,73 @@ const AddAddress = () => {
         }
     }
 
+    const inputCls = "px-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-emerald-700/30 focus:border-emerald-700 transition w-full";
+
     return (
         <>
             <Navbar />
-            <div className="px-6 md:px-16 lg:px-32 py-16 flex flex-col md:flex-row justify-between">
-                <form onSubmit={onSubmitHandler} className="w-full">
-                    <p className="text-2xl md:text-3xl text-gray-500">
-                        Add Shipping <span className="font-semibold text-orange-600">Address</span>
-                    </p>
-                    <div className="space-y-3 max-w-sm mt-10">
+            <div className="px-6 md:px-16 lg:px-32 py-14 bg-neutral-50 min-h-screen">
+                <div className="max-w-xl mx-auto">
+                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-neutral-900">
+                        Add Shipping Address
+                    </h1>
+                    <p className="text-sm text-neutral-500 mt-2">Where should we deliver your order?</p>
+
+                    <form onSubmit={onSubmitHandler} className="bg-white rounded-2xl border border-neutral-200 p-7 mt-8 space-y-4">
                         <input
-                            className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
+                            className={inputCls}
                             type="text"
                             placeholder="Full name"
                             onChange={(e) => setAddress({ ...address, fullName: e.target.value })}
                             value={address.fullName}
+                            required
                         />
                         <input
-                            className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
+                            className={inputCls}
                             type="text"
                             placeholder="Phone number"
                             onChange={(e) => setAddress({ ...address, phoneNumber: e.target.value })}
                             value={address.phoneNumber}
+                            required
                         />
                         <input
-                            className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
+                            className={inputCls}
                             type="text"
                             placeholder="Pin code"
                             onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
                             value={address.pincode}
                         />
                         <textarea
-                            className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500 resize-none"
-                            type="text"
+                            className={`${inputCls} resize-none`}
                             rows={4}
                             placeholder="Address (Area and Street)"
                             onChange={(e) => setAddress({ ...address, area: e.target.value })}
                             value={address.area}
+                            required
                         ></textarea>
-                        <div className="flex space-x-3">
+                        <div className="flex gap-4">
                             <input
-                                className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
+                                className={inputCls}
                                 type="text"
                                 placeholder="City/District/Town"
                                 onChange={(e) => setAddress({ ...address, city: e.target.value })}
                                 value={address.city}
+                                required
                             />
                             <input
-                                className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
+                                className={inputCls}
                                 type="text"
                                 placeholder="State"
                                 onChange={(e) => setAddress({ ...address, state: e.target.value })}
                                 value={address.state}
+                                required
                             />
                         </div>
-                    </div>
-                    <button type="submit" className="max-w-sm w-full mt-6 bg-orange-600 text-white py-3 hover:bg-orange-700 uppercase">
-                        Save address
-                    </button>
-                </form>
-                <Image
-                    className="md:mr-16 mt-16 md:mt-0"
-                    src={assets.my_location_image}
-                    alt="my_location_image"
-                />
+                        <button type="submit" className="w-full bg-neutral-900 text-white text-sm font-semibold py-3.5 rounded-xl hover:bg-emerald-800 transition">
+                            Save Address
+                        </button>
+                    </form>
+                </div>
             </div>
             <Footer />
         </>

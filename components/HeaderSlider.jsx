@@ -9,48 +9,53 @@ const HeaderSlider = () => {
   const sliderData = [
     {
       id: 1,
-      title: "Pink Crocs - The Perfect Pair for Your Next Adventure",
-      offer: "Buy Now!!",
+      eyebrow: "Best Seller",
+      title: "Sandal Crocs Pink Casual",
+      description: "The perfect pair for your next adventure — lightweight, comfy, and effortlessly stylish.",
       buttonText1: "Buy now",
       buttonText2: "Find more",
       imgSrc: assets.header_pink_crocs,
-      link: "/product/6828c37d7637f1c37ded36ac", 
+      link: "/product/6abe379aea64e4aad3352011",
     },
     {
       id: 2,
-      title: "Blue Flop - Blue Flop is a casual sandal with a simple design",
-      offer: "Hurry up!",
+      eyebrow: "New Arrival",
+      title: "Sandal Flip Flop Biru",
+      description: "A casual sandal with a simple design for your everyday moves.",
       buttonText1: "Shop Now",
       buttonText2: "Explore Deals",
       imgSrc: assets.header_blue_flop,
-      link: "/product/682c2ce78da73f37929755b7",
+      link: "/product/6abe379aea64e4aad3352012",
     },
     {
       id: 3,
-      title: "Pink Swallow is a durable and comfortable sandal with a classic design",
-      offer: "Exclusive",
+      eyebrow: "Classic Pick",
+      title: "Sandal Jepit Swallow Pink",
+      description: "A durable and comfortable sandal with a timeless classic design.",
       buttonText1: "Order Now",
       buttonText2: "Learn More",
       imgSrc: assets.header_pink_swallow,
-      link: "/product/6828c3d07637f1c37ded36b0",
+      link: "/product/6abe379aea64e4aad3352015",
     },
     {
       id: 4,
-      title: "Lurad Sandal is a stylish and lightweight sandal with a wood-textured finish",
-      offer: "Exclusive With a Wood Texture",
+      eyebrow: "Premium",
+      title: "Sandal Lurad Premium",
+      description: "A stylish and lightweight sandal with an elegant wood-textured finish.",
       buttonText1: "Order Now",
       buttonText2: "Learn More",
       imgSrc: assets.header_lurad_sandal,
-      link: "/product/6828c4287637f1c37ded36b4",
+      link: "/product/6abe379aea64e4aad3352013",
     },
     {
       id: 5,
-      title: "Swallow x Ndaweg Studio is a special edition sandal featuring handcrafted carvings",
-      offer: "Limited Edition!",
+      eyebrow: "Limited Edition",
+      title: "Sandal Gunung Swallow Ndaweg",
+      description: "A special edition sandal featuring handcrafted carvings — built for the trail.",
       buttonText1: "Order Now",
       buttonText2: "Learn More",
       imgSrc: assets.header_swallow_ndaweg,
-      link: "/product/6828c4a87637f1c37ded36b8",
+      link: "/product/6abe379aea64e4aad3352014",
     },
   ];
 
@@ -59,7 +64,7 @@ const HeaderSlider = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % sliderData.length);
-    }, 3000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [sliderData.length]);
 
@@ -78,21 +83,29 @@ const HeaderSlider = () => {
         {sliderData.map((slide, index) => (
           <div
             key={slide.id}
-            className="flex flex-col-reverse md:flex-row items-center justify-between bg-slate-800 py-8 md:px-14 px-5 mt-6 rounded-xl min-w-full"
+            className="grid md:grid-cols-2 items-stretch bg-neutral-100 mt-6 rounded-3xl min-w-full overflow-hidden border border-neutral-200/60"
           >
-            <div className="md:pl-8 mt-10 md:mt-0">
-              <p className="md:text-base text-slate-300 pb-1">{slide.offer}</p>
-              <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-gray-50 font-semibold">
+            <div className="flex flex-col justify-center px-6 py-10 md:px-14 md:py-16 order-2 md:order-1">
+              <span className="inline-flex w-fit items-center rounded-full bg-emerald-700/10 text-emerald-800 text-xs font-semibold px-3 py-1 mb-4">
+                {slide.eyebrow}
+              </span>
+              <h1 className="text-3xl md:text-[44px] md:leading-[52px] font-bold tracking-tight text-neutral-900">
                 {slide.title}
               </h1>
-              <div className="flex items-center mt-4 md:mt-6 ">
+              <p className="mt-3 text-neutral-500 max-w-md text-sm md:text-base">
+                {slide.description}
+              </p>
+              <div className="flex items-center gap-5 mt-6 md:mt-8">
                 <button
-                  onClick={() => router.push(slide.link || "/")}  
-                  className="md:px-10 px-7 md:py-2.5 py-2 bg-sky-600 text-white rounded-full font-medium hover:bg-white hover:text-black transition"
+                  onClick={() => router.push(slide.link || "/")}
+                  className="px-8 md:px-10 py-3 bg-neutral-900 text-white rounded-full text-sm font-semibold hover:bg-emerald-800 transition"
                 >
                   {slide.buttonText1}
                 </button>
-                <button className="group flex items-center gap-2 px-6 py-2.5 font-medium text-gray-500">
+                <button
+                  onClick={() => router.push("/all-products")}
+                  className="group flex items-center gap-2 text-sm font-semibold text-neutral-700 hover:text-neutral-900 transition"
+                >
                   {slide.buttonText2}
                   <Image
                     className="group-hover:translate-x-1 transition"
@@ -102,26 +115,28 @@ const HeaderSlider = () => {
                 </button>
               </div>
             </div>
-            <div className="flex items-center flex-1 justify-center">
+            <div className="relative min-h-64 md:min-h-[380px] order-1 md:order-2">
               <Image
-                className="md:w-72 w-48"
+                className="absolute inset-0 w-full h-full object-cover"
                 src={slide.imgSrc}
                 alt={`Slide ${index + 1}`}
+                fill
               />
             </div>
           </div>
         ))}
       </div>
 
-      <div className="flex items-center justify-center gap-2 mt-8">
+      <div className="flex items-center justify-center gap-2 mt-6">
         {sliderData.map((_, index) => (
-          <div
+          <button
             key={index}
             onClick={() => handleSlideChange(index)}
-            className={`h-2 w-2 rounded-full cursor-pointer ${
-              currentSlide === index ? "bg-gray-50" : "bg-gray-500/30"
+            aria-label={`Go to slide ${index + 1}`}
+            className={`h-2 rounded-full cursor-pointer transition-all ${
+              currentSlide === index ? "w-8 bg-neutral-900" : "w-2 bg-neutral-300 hover:bg-neutral-400"
             }`}
-          ></div>
+          ></button>
         ))}
       </div>
     </div>

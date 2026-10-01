@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from "react";
-import { assets, orderDummyData } from "@/assets/assets";
+import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import Footer from "@/components/Footer";
@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 const MyOrders = () => {
 
-    const { currency, getToken, user } = useAppContext();
+    const { currency, getToken, user, router } = useAppContext();
 
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -40,47 +40,60 @@ const MyOrders = () => {
     return (
         <>
             <Navbar />
-            <div className="flex flex-col justify-between px-6 md:px-16 lg:px-32 py-6 min-h-screen">
-                <div className="space-y-5">
-                    <h2 className="text-lg font-medium mt-6 text-gray-50">My Orders</h2>
-                    {loading ? <Loading /> : (<div className="max-w-5xl border-t border-gray-300 text-sm">
-                        {orders.map((order, index) => (
-                            <div key={index} className="flex flex-col md:flex-row gap-5 justify-between p-5 border-b border-gray-300">
-                                <div className="flex-1 flex gap-5 max-w-80">
-                                    <Image
-                                        className="max-w-16 max-h-16 object-cover"
-                                        src={assets.box_icon}
-                                        alt="box_icon"
-                                    />
-                                    <p className="flex flex-col gap-3 text-gray-50">
-                                        <span className="font-medium text-base">
-                                            {order.items.map((item) => item.product.name + ` x ${item.quantity}`).join(", ")}
-                                        </span>
-                                        <span>Items : {order.items.length}</span>
-                                    </p>
+            <div className="px-6 md:px-16 lg:px-32 py-10 min-h-screen bg-neutral-50">
+                <div className="max-w-5xl mx-auto">
+                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-neutral-900 mb-8">My Orders</h1>
+                    {loading ? <Loading /> : orders.length === 0 ? (
+                        <div className="bg-white rounded-2xl border border-neutral-200 p-12 text-center">
+                            <p className="text-lg font-semibold text-neutral-900">No orders yet</p>
+                            <p className="text-sm text-neutral-500 mt-2">Your orders will appear here after checkout.</p>
+                            <button
+                                onClick={() => router.push('/all-products')}
+                                className="mt-6 px-8 py-3 bg-neutral-900 text-white rounded-full text-sm font-semibold hover:bg-emerald-800 transition"
+                            >
+                                Start Shopping
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            {orders.map((order, index) => (
+                                <div key={index} className="bg-white rounded-2xl border border-neutral-200 p-5 md:p-6">
+                                    <div className="flex flex-col md:flex-row gap-5 md:items-center justify-between">
+                                        <div className="flex gap-4 items-center min-w-0">
+                                            <div className="w-14 h-14 rounded-xl bg-neutral-100 flex items-center justify-center shrink-0">
+                                                <Image
+                                                    className="w-8 h-8 object-contain"
+                                                    src={assets.box_icon}
+                                                    alt="box_icon"
+                                                />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="font-semibold text-neutral-900 text-sm truncate">
+                                                    {order.items.map((item) => item.product.name + ` x ${item.quantity}`).join(", ")}
+                                                </p>
+                                                <p className="text-xs text-neutral-500 mt-1">
+                                                    {order.items.length} items · {new Date(order.date).toLocaleDateString()} · COD
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <p className="font-bold text-neutral-900 md:text-right shrink-0">{currency}{order.amount}</p>
+                                    </div>
+                                    <div className="mt-4 pt-4 border-t border-neutral-100 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                                        <div>
+                                            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400 mb-1">Ship to</p>
+                                            <p className="font-medium text-neutral-800">{order.address.fullName}</p>
+                                            <p className="text-neutral-500">{order.address.area}, {order.address.city}, {order.address.state}</p>
+                                            <p className="text-neutral-500">{order.address.phoneNumber}</p>
+                                        </div>
+                                        <div className="sm:text-right">
+                                            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400 mb-1">Courier contact</p>
+                                            <p className="text-neutral-500">No Admin Kurir : 08123123412</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p> 
-                                        <span className="font-medium text-gray-50">{order.address.fullName}</span>
-                                        <br />
-                                        <span className="text-gray-50">{order.address.area}</span>
-                                        <br />
-                                        <span className="text-gray-50">{`${order.address.city}, ${order.address.state}`}</span>
-                                        <br />
-                                        <span className="text-gray-50">{order.address.phoneNumber}</span>
-                                    </p>
-                                </div>
-                                <p className="font-medium my-auto text-gray-50">{currency}{order.amount}</p>
-                                <div>
-                                    <p className="flex flex-col text-gray-50">
-                                        <span >Method : COD</span>
-                                        <span>Date : {new Date(order.date).toLocaleDateString()}</span>
-                                        <span>No Admin Kurir : 08123123412</span>
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>)}
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
             <Footer />

@@ -1,43 +1,62 @@
 import React from 'react'
-import { assets } from '@/assets/assets'
-import Image from 'next/image';
 import { useAppContext } from '@/context/AppContext';
 import { motion } from "framer-motion";
+
 const ProductCard = ({ product }) => {
 
     const { currency, router } = useAppContext()
 
+    const discount = product.price > product.offerPrice
+        ? Math.round((1 - product.offerPrice / product.price) * 100)
+        : 0;
+
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 30 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            viewport={{ once: false, amount: 0.3 }}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0.2 }}
             onClick={() => { router.push('/product/' + product._id); scrollTo(0, 0) }}
-            className="flex flex-col items-start gap-0.5 max-w-[200px] w-full cursor-pointer"
+            className="group flex flex-col w-full cursor-pointer bg-white rounded-2xl border border-neutral-200/80 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
         >
-
-            <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-gray-400 group">
-                <Image
+            <div className="relative w-full aspect-square overflow-hidden bg-neutral-100">
+                <img
                     src={product.image[0]}
                     alt={product.name}
-                    width={500}
-                    height={500}
-                    className="w-full h-full object-contain transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:brightness-110"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-xl" />
-
+                {discount > 0 && (
+                    <span className="absolute top-3 left-3 rounded-full bg-red-600 text-white text-[11px] font-semibold px-2.5 py-1">
+                        -{discount}%
+                    </span>
+                )}
             </div>
 
-
-            <p className="md:text-base font-medium pt-2 w-full truncate">{product.name}</p>
-            <p className="w-full text-xs text-gray-500/70 max-sm:hidden truncate text-gray-400">{product.description}</p>
-
-            <div className="flex items-end justify-between w-full mt-1">
-                <p className="text-base font-medium">{currency}{product.offerPrice}</p>
-                <button className="max-sm:hidden px-4 py-1.5 bg-sky-500 text-white border border-sky-500 rounded-full text-xs hover:bg-white hover:text-black transition">
-                    Buy now
-                </button>
+            <div className="flex flex-col gap-1 p-4">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-neutral-400 truncate">
+                    {product.category}
+                </p>
+                <p className="text-sm font-semibold text-neutral-900 truncate">
+                    {product.name}
+                </p>
+                <div className="flex items-center justify-between mt-2">
+                    <div className="flex items-baseline gap-1.5">
+                        <p className="text-base font-bold text-neutral-900">
+                            {currency}{product.offerPrice}
+                        </p>
+                        {product.price > product.offerPrice && (
+                            <p className="text-xs text-neutral-400 line-through">
+                                {currency}{product.price}
+                            </p>
+                        )}
+                    </div>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); router.push('/product/' + product._id); scrollTo(0, 0); }}
+                        className="px-4 py-1.5 bg-neutral-900 text-white rounded-full text-xs font-semibold hover:bg-emerald-800 transition"
+                    >
+                        Buy now
+                    </button>
+                </div>
             </div>
         </motion.div>
     )

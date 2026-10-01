@@ -1,6 +1,6 @@
 'use client';
-import React, { use, useEffect, useState } from "react";
-import { assets, orderDummyData } from "@/assets/assets";
+import React, { useEffect, useState } from "react";
+import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import Footer from "@/components/seller/Footer";
@@ -38,49 +38,63 @@ const Orders = () => {
     }, [user]);
 
     return (
-        <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm">
-            {loading ? <Loading /> : <div className="md:p-10 p-4 space-y-5">
-                <h2 className="text-lg font-medium text-gray-100">Orders</h2>
-                <div className="max-w-4xl rounded-md text-gray-100">
-                    {orders.map((order, index) => (
-                        <div key={index} className="flex flex-col md:flex-row gap-5 justify-between p-5 border-t border-gray-300">
-                            <div className="flex-1 flex gap-5 max-w-80">
-                                <Image
-                                    className="max-w-16 max-h-16 object-cover"
-                                    src={assets.box_icon}
-                                    alt="box_icon"
-                                />
-                                <p className="flex flex-col gap-3">
-                                    <span className="font-medium">
-                                        {order.items.map((item) => item.product.name + ` x ${item.quantity}`).join(", ")}
-                                    </span>
-                                    <span>Items : {order.items.length}</span>
-                                </p>
-                            </div>
-                            <div>
-                                <p>
-                                    <span className="font-medium">{order.address.fullName}</span>
-                                    <br />
-                                    <span >{order.address.area}</span>
-                                    <br />
-                                    <span>{`${order.address.city}, ${order.address.state}`}</span>
-                                    <br />
-                                    <span>{order.address.phoneNumber}</span>
-                                </p>
-                            </div>
-                            <p className="font-medium my-auto">{currency}{order.amount}</p>
-                            <div>
-                                <p className="flex flex-col">
-                                    <span>Method : COD</span>
-                                    <span>Date : {new Date(order.date).toLocaleDateString()}</span>
-                                    <span>No Pembeli : 0813213211</span>
-                                </p>
-                            </div>
+        <div className="flex-1 min-h-screen bg-neutral-50 flex flex-col">
+            {loading ? <Loading /> : (
+                <div className="p-6 md:p-10">
+                    <div className="mb-6">
+                        <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Orders</h1>
+                        <p className="text-sm text-neutral-500 mt-1">{orders.length} orders received</p>
+                    </div>
+                    {orders.length === 0 ? (
+                        <div className="bg-white rounded-2xl border border-neutral-200 p-12 text-center max-w-4xl">
+                            <p className="text-lg font-semibold text-neutral-900">No orders yet</p>
+                            <p className="text-sm text-neutral-500 mt-2">New customer orders will appear here.</p>
                         </div>
-                    ))}
+                    ) : (
+                        <div className="space-y-4 max-w-4xl">
+                            {orders.map((order, index) => (
+                                <div key={index} className="bg-white rounded-2xl border border-neutral-200 p-5 md:p-6">
+                                    <div className="flex flex-col md:flex-row gap-5 md:items-center justify-between">
+                                        <div className="flex gap-4 items-center min-w-0">
+                                            <div className="w-14 h-14 rounded-xl bg-neutral-100 flex items-center justify-center shrink-0">
+                                                <Image
+                                                    className="w-8 h-8 object-contain"
+                                                    src={assets.box_icon}
+                                                    alt="box_icon"
+                                                />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="font-semibold text-neutral-900 text-sm truncate">
+                                                    {order.items.map((item) => item.product.name + ` x ${item.quantity}`).join(", ")}
+                                                </p>
+                                                <p className="text-xs text-neutral-500 mt-1">
+                                                    {order.items.length} items · {new Date(order.date).toLocaleDateString()} · COD
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <p className="font-bold text-neutral-900 shrink-0">{currency}{order.amount}</p>
+                                    </div>
+                                    <div className="mt-4 pt-4 border-t border-neutral-100 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                                        <div>
+                                            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400 mb-1">Ship to</p>
+                                            <p className="font-medium text-neutral-800">{order.address.fullName}</p>
+                                            <p className="text-neutral-500">{order.address.area}, {order.address.city}, {order.address.state}</p>
+                                            <p className="text-neutral-500">{order.address.phoneNumber}</p>
+                                        </div>
+                                        <div className="sm:text-right">
+                                            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400 mb-1">Buyer contact</p>
+                                            <p className="text-neutral-500">No Pembeli : 0813213211</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
-            </div>}
-            <Footer />
+            )}
+            <div className="mt-auto">
+                <Footer />
+            </div>
         </div>
     );
 };

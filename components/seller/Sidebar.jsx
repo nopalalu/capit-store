@@ -13,7 +13,7 @@ const SideBar = () => {
     ];
 
     return (
-        <div className='md:w-64 w-16 border-r min-h-screen text-base border-gray-300 py-2 flex flex-col text-gray-50'>
+        <div className='md:w-60 w-16 border-r border-neutral-200 min-h-screen bg-white py-4 flex flex-col gap-1 px-2 shrink-0'>
             {menuItems.map((item) => {
 
                 const isActive = pathname === item.path;
@@ -22,13 +22,14 @@ const SideBar = () => {
                     <Link href={item.path} key={item.name} passHref>
                         <div
                             className={
-                                `flex items-center py-3 px-4 gap-3 transition-colors duration-300 ${isActive
-                                    ? "border-r-4 md:border-r-[6px] text-gray-800 bg-gray-50 border-sky-500"
-                                    : "text-gray-400 hover:bg-gray-50 hover:text-gray-800 border-transparent"
+                                `flex items-center py-2.5 px-3 gap-3 rounded-xl text-sm font-medium transition ${isActive
+                                    ? "bg-neutral-900 text-white"
+                                    : "text-neutral-600 hover:bg-neutral-100"
                                 }`
                             }
                         >
-                            <p className='md:block hidden text-center'>{item.name}</p>
+                            <Image src={item.icon} alt="" className={`w-5 h-5 ${isActive ? "invert" : ""}`} />
+                            <p className='md:block hidden'>{item.name}</p>
                         </div>
                     </Link>
                 );

@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import Footer from "@/components/seller/Footer";
@@ -9,7 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const ProductList = () => {
-  const { router, getToken, user } = useAppContext();
+  const { router, getToken, user, currency } = useAppContext();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -101,98 +100,129 @@ const ProductList = () => {
     }
   }, [user]);
 
+  const inputCls = "w-full px-4 py-2.5 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700/30 focus:border-emerald-700 transition";
+
   return (
-    <div className="flex-1 min-h-screen flex flex-col justify-between">
+    <div className="flex-1 min-h-screen bg-neutral-50 flex flex-col">
       {loading ? <Loading /> : (
-        <div className="w-full md:p-10 p-4">
-          <h2 className="pb-4 text-lg font-medium text-gray-50">All Product</h2>
-          <div className="flex flex-col items-center max-w-4xl w-full overflow-hidden rounded-md bg-white border border-gray-500/20">
-            <table className="table-fixed w-full overflow-hidden">
-              <thead className="text-gray-900 text-sm text-left">
-                <tr>
-                  <th className="w-2/3 md:w-2/5 px-4 py-3 font-medium truncate">Product</th>
-                  <th className="px-4 py-3 font-medium truncate max-sm:hidden">Category</th>
-                  <th className="px-4 py-3 font-medium truncate">Price</th>
-                  <th className="px-4 py-3 font-medium truncate max-sm:hidden">Action</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm text-gray-500">
-                {products.map((product, index) => (
-                  <tr key={index} className="border-t border-gray-500/20">
-                    <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
-                      <div className="bg-gray-500/10 rounded p-2">
-                        <Image
-                          src={product.image[0]}
-                          alt="product Image"
-                          className="w-16"
-                          width={1280}
-                          height={720}
-                        />
-                      </div>
-                      <span className="truncate w-full">{product.name}</span>
-                    </td>
-                    <td className="px-4 py-3 max-sm:hidden">{product.category}</td>
-                    <td className="px-4 py-3">Rp.{product.offerPrice}</td>
-                    <td className="px-4 py-3 max-sm:hidden flex gap-2">
-                      <button
-                        onClick={() => handleEditClick(product)}
-                        className="px-2 py-1 bg-blue-600 text-white rounded-md"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => router.push(`/product/${product._id}`)}
-                        className="px-2 py-1 bg-orange-600 text-white rounded-md"
-                      >
-                        Visit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(product._id)}
-                        className="px-2 py-1 bg-red-600 text-white rounded-md"
-                      >
-                        Delete
-                      </button>
-                    </td>
+        <div className="w-full p-6 md:p-10">
+          <div className="flex items-center justify-between mb-6 max-w-5xl">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Products</h1>
+              <p className="text-sm text-neutral-500 mt-1">{products.length} products listed</p>
+            </div>
+            <button
+              onClick={() => router.push('/seller')}
+              className="px-5 py-2.5 bg-neutral-900 text-white text-sm font-semibold rounded-xl hover:bg-emerald-800 transition"
+            >
+              + Add Product
+            </button>
+          </div>
+          <div className="max-w-5xl w-full overflow-hidden rounded-2xl bg-white border border-neutral-200">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-xs uppercase tracking-wide text-neutral-400 border-b border-neutral-200">
+                    <th className="px-5 py-4 font-semibold">Product</th>
+                    <th className="px-5 py-4 font-semibold max-sm:hidden">Category</th>
+                    <th className="px-5 py-4 font-semibold">Price</th>
+                    <th className="px-5 py-4 font-semibold max-sm:hidden">Stock</th>
+                    <th className="px-5 py-4 font-semibold text-right">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-neutral-100">
+                  {products.map((product, index) => (
+                    <tr key={index} className="hover:bg-neutral-50/70 transition">
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-12 h-12 rounded-xl bg-neutral-100 overflow-hidden shrink-0">
+                            <Image
+                              src={product.image[0]}
+                              alt="product Image"
+                              className="w-full h-full object-cover"
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                          <span className="font-medium text-neutral-800 truncate">{product.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-5 py-3.5 max-sm:hidden">
+                        <span className="inline-flex items-center rounded-full bg-neutral-100 text-neutral-600 text-xs font-medium px-2.5 py-1">
+                          {product.category}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5 font-semibold text-neutral-900 whitespace-nowrap">{currency}{product.offerPrice}</td>
+                      <td className="px-5 py-3.5 max-sm:hidden">
+                        {product.stock > 0 ? (
+                          <span className="text-neutral-600">{product.stock} pcs</span>
+                        ) : (
+                          <span className="text-red-600 font-medium">Habis</span>
+                        )}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex gap-2 justify-end">
+                          <button
+                            onClick={() => handleEditClick(product)}
+                            className="px-3 py-1.5 bg-neutral-900 text-white text-xs font-semibold rounded-lg hover:bg-neutral-700 transition"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => router.push(`/product/${product._id}`)}
+                            className="px-3 py-1.5 bg-white border border-neutral-200 text-neutral-700 text-xs font-semibold rounded-lg hover:border-neutral-900 transition max-sm:hidden"
+                          >
+                            Visit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(product._id)}
+                            className="px-3 py-1.5 bg-red-50 text-red-700 text-xs font-semibold rounded-lg hover:bg-red-100 transition"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
 
       {/* Modal Edit Product */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-[90%] max-w-lg shadow-xl">
-            <h3 className="text-lg font-semibold mb-4">Edit Product</h3>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-6 md:p-8 rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-bold text-neutral-900 mb-5">Edit Product</h3>
             <form onSubmit={handleEditSubmit} className="space-y-4">
-              <div className="flex flex-col gap-1">
-                <label className="text-base font-medium">Product Name</label>
+              <div>
+                <label className="text-sm font-semibold text-neutral-700 block mb-1.5">Product Name</label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border rounded"
+                  className={inputCls}
                   required
                 />
               </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-base font-medium">Description</label>
+              <div>
+                <label className="text-sm font-semibold text-neutral-700 block mb-1.5">Description</label>
                 <textarea
                   rows={3}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 border rounded resize-none"
+                  className={`${inputCls} resize-none`}
                   required
                 />
               </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-base font-medium">Category</label>
+              <div>
+                <label className="text-sm font-semibold text-neutral-700 block mb-1.5">Category</label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-3 py-2 border rounded"
+                  className={inputCls}
                   required
                 >
                   <option value="" disabled hidden>-- Pilih --</option>
@@ -203,48 +233,50 @@ const ProductList = () => {
                   <option value="Sandal Heels">Sandal Heels</option>
                 </select>
               </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-base font-medium">Price</label>
-                <input
-                  type="number"
-                  value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-base font-medium">Offer Price</label>
-                <input
-                  type="number"
-                  value={formData.offerPrice}
-                  onChange={(e) => setFormData({ ...formData, offerPrice: e.target.value })}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-base font-medium">Stock</label>
-                <input
-                  type="number"
-                  value={formData.stock}
-                  onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                />
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="text-sm font-semibold text-neutral-700 block mb-1.5">Price</label>
+                  <input
+                    type="number"
+                    value={formData.price}
+                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                    className={inputCls}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-neutral-700 block mb-1.5">Offer Price</label>
+                  <input
+                    type="number"
+                    value={formData.offerPrice}
+                    onChange={(e) => setFormData({ ...formData, offerPrice: e.target.value })}
+                    className={inputCls}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-neutral-700 block mb-1.5">Stock</label>
+                  <input
+                    type="number"
+                    value={formData.stock}
+                    onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                    className={inputCls}
+                    required
+                  />
+                </div>
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md"
+                  className="px-5 py-2.5 bg-neutral-100 text-neutral-700 text-sm font-semibold rounded-xl hover:bg-neutral-200 transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                  className="px-5 py-2.5 bg-neutral-900 text-white text-sm font-semibold rounded-xl hover:bg-emerald-800 transition"
                 >
                   Save
                 </button>
@@ -254,7 +286,9 @@ const ProductList = () => {
         </div>
       )}
 
-      <Footer />
+      <div className="mt-auto">
+        <Footer />
+      </div>
     </div>
   );
 };
