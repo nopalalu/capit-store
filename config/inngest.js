@@ -61,6 +61,50 @@ export const syncUserDeletion = inngest.createFunction(
   }
 );
 
+// Scheduled sync: pull all Clerk users into MongoDB every hour.
+// Runs fully in code — no webhook/transform dashboard setup needed.
+export const syncAllUsersScheduled = inngest.createFunction(
+  { id: "sync-all-users-from-clerk" },
+  { cron: "0 * * * *" },
+  async () => {
+    const { clerkClient } = await import("@clerk/nextjs/server");
+    const client = await clerkClient();
+    await connDB();
+
+    const clerkIds = new Set();
+    let offset = 0;
+    for (;;) {
+      const { data, totalCount } = await client.users.getUserList({
+        limit: 100,
+        offset,
+      });
+      for (const u of data) {
+        clerkIds.add(u.id);
+        await User.findByIdAndUpdate(
+          u.id,
+          {
+            email: u.emailAddresses?.[0]?.emailAddress ?? "",
+            name: `${u.firstName ?? ""} ${u.lastName ?? ""}`.trim() || "User",
+            imageUrl: u.imageUrl ?? "",
+          },
+          { upsert: true }
+        );
+      }
+      offset += data.length;
+      if (offset >= totalCount || data.length === 0) break;
+    }
+
+    // Remove users that were deleted from Clerk
+    const dbIds = (await User.find({}, { _id: 1 }).lean()).map((u) => u._id);
+    const stale = dbIds.filter((id) => !clerkIds.has(id));
+    if (stale.length > 0) {
+      await User.deleteMany({ _id: { $in: stale } });
+    }
+
+    return { success: true, synced: clerkIds.size, removed: stale.length };
+  }
+);
+
 // Inngest to create user order in db
 export const createUserOrder = inngest.createFunction(
   {
