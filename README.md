@@ -4,6 +4,8 @@ A fullstack e-commerce web application built with Next.js and MongoDB — with a
 
 > Team project. This repo is a personal fork for portfolio purposes; the original team repo lives at `Asyra20/Capit_Store`.
 
+**Live demo:** https://capit-store-three.vercel.app
+
 ## Features
 
 **Storefront**
