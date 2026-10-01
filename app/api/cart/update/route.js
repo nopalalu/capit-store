@@ -8,7 +8,11 @@ export async function POST(request) {
     const { userId } = getAuth(request);
     const { cartData } = await request.json();
     await connDB();
-    const user = await User.findById(userId);
+    let user = await User.findById(userId);
+    if (!user) {
+      // User exists in Clerk but not yet in DB; create a minimal record
+      user = await User.create({ _id: userId, name: "User", email: "", imageUrl: "" });
+    }
     user.cartItems = cartData;
     await user.save();
     return NextResponse.json({ success: true });
