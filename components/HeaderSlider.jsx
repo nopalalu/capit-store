@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -15,7 +14,7 @@ const HeaderSlider = () => {
       description: "The perfect pair for your next adventure — lightweight, comfy, and effortlessly stylish.",
       buttonText1: "Buy now",
       buttonText2: "Find more",
-      imgSrc: assets.header_pink_crocs,
+      imgSrc: "/products/crocs-pink.jpg",
       link: "/product/6abe379aea64e4aad3352011",
     },
     {
@@ -25,7 +24,7 @@ const HeaderSlider = () => {
       description: "A casual sandal with a simple design for your everyday moves.",
       buttonText1: "Shop Now",
       buttonText2: "Explore Deals",
-      imgSrc: assets.header_blue_flop,
+      imgSrc: "/products/flipflop-blue.jpg",
       link: "/product/6abe379aea64e4aad3352012",
     },
     {
@@ -35,7 +34,7 @@ const HeaderSlider = () => {
       description: "A durable and comfortable sandal with a timeless classic design.",
       buttonText1: "Order Now",
       buttonText2: "Learn More",
-      imgSrc: assets.header_pink_swallow,
+      imgSrc: "/products/swallow-pink.jpg",
       link: "/product/6abe379aea64e4aad3352015",
     },
     {
@@ -45,7 +44,7 @@ const HeaderSlider = () => {
       description: "A stylish and lightweight sandal with an elegant wood-textured finish.",
       buttonText1: "Order Now",
       buttonText2: "Learn More",
-      imgSrc: assets.header_lurad_sandal,
+      imgSrc: "/products/lurad-premium.jpg",
       link: "/product/6abe379aea64e4aad3352013",
     },
     {
@@ -55,7 +54,7 @@ const HeaderSlider = () => {
       description: "A special edition sandal featuring handcrafted carvings — built for the trail.",
       buttonText1: "Order Now",
       buttonText2: "Learn More",
-      imgSrc: assets.header_swallow_ndaweg,
+      imgSrc: "/products/gunung-ndaweg.jpg",
       link: "/product/6abe379aea64e4aad3352014",
     },
   ];
@@ -175,15 +174,18 @@ const HeaderSlider = () => {
                     <div className="relative mx-auto w-full max-w-[340px] md:max-w-[400px]">
                       <div className="overflow-hidden rounded-t-[999px] rounded-b-[28px] border-2 border-neutral-900 shadow-[10px_10px_0_#1c1917] bg-white">
                         <motion.div
+                          className="relative aspect-[4/5]"
                           initial={false}
                           animate={active ? { scale: 1 } : { scale: 1.08 }}
                           transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                         >
                           <Image
-                            className="w-full aspect-[4/5] object-cover"
+                            className="object-cover"
                             src={slide.imgSrc}
                             alt={slide.title}
+                            fill
                             priority={index === 0}
+                            sizes="(max-width: 768px) 80vw, 400px"
                           />
                         </motion.div>
                       </div>

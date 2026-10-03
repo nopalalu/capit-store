@@ -171,7 +171,7 @@ const Product = () => {
                     </Reveal>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 w-full">
                         {products.slice(0, 5).map((product, index) => (
-                            <ProductCard key={index} product={product} />
+                            <ProductCard key={index} index={index} product={product} />
                         ))}
                     </div>
                 </div>
