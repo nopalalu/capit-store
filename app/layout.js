@@ -4,6 +4,7 @@ import { AppContextProvider } from "@/context/AppContext";
 import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
 import MotionProvider from "@/components/MotionProvider";
+import Preloader from "@/components/Preloader";
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500", "600", "700"] })
 const fraunces = Fraunces({
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={`${outfit.className} ${fraunces.variable} antialiased text-neutral-800 bg-white`} >
+          <Preloader />
           <Toaster />
           <MotionProvider>
             <AppContextProvider>
