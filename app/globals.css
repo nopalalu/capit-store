@@ -2,9 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-    scroll-behavior: smooth;
-}
+/* Catatan: JANGAN pasang scroll-behavior: smooth secara global —
+   itu bikin setiap pindah halaman (router.push) kelihatan "ketarik"
+   ke atas karena animasi scroll ikut jalan. Yang butuh smooth
+   (mis. BackToTop) sudah pakai behavior: "smooth" eksplisit. */
 
 body {
   @apply bg-white text-neutral-800;
@@ -151,7 +152,23 @@ body {
   .preloader-letter,
   .preloader-bar span,
   .preloader-tag { animation-duration: 0.01s; animation-delay: 0s; }
-  * {
-    scroll-behavior: auto;
-  }
+  .skeleton::after { animation: none; }
+}
+
+/* ---------- Loading skeleton shimmer ---------- */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: #e7e5e4;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  animation: skeleton-sweep 1.5s infinite;
+}
+@keyframes skeleton-sweep {
+  to { transform: translateX(100%); }
 }

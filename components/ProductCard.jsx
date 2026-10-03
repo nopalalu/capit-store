@@ -12,7 +12,7 @@ const ProductCard = ({ product, index = 0 }) => {
         ? Math.round((1 - product.offerPrice / product.price) * 100)
         : 0;
 
-    const go = () => { router.push('/product/' + product._id); scrollTo(0, 0) };
+    const go = () => { router.push('/product/' + product._id); window.scrollTo({ top: 0, behavior: 'instant' }); };
 
     return (
         <>

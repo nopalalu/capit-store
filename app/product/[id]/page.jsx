@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import Loading from "@/components/Loading";
+import ProductDetailSkeleton from "@/components/ProductDetailSkeleton";
 import { useAppContext } from "@/context/AppContext";
 import React from "react";
 import { motion } from "framer-motion";
@@ -27,7 +27,7 @@ const Product = () => {
         fetchProductData();
     }, [id, products.length]);
 
-    if (!productData) return <Loading />;
+    if (!productData) return <ProductDetailSkeleton />;
 
     const inStock = productData.stock > 0;
 
