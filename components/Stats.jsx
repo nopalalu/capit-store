@@ -10,14 +10,21 @@ const stats = [
   { display: "7", suffix: "", label: "Hari garansi tukar ukuran" },
 ];
 
-// Efek "cap stempel": angka menghantam dari besar + miring, lalu memantul ke posisi pas.
-const stamp = {
-  hidden: { opacity: 0, scale: 1.6, rotate: -7 },
+// Papan flip mekanik: angka jatuh dari atas kayak papan jadwal kereta,
+// memantul sekali sebelum berhenti pas. Jauh lebih "niat" dari fade biasa.
+const flap = {
+  hidden: { rotateX: -88, opacity: 0, y: -14 },
   show: (i) => ({
+    rotateX: 0,
     opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: { type: "spring", stiffness: 280, damping: 14, delay: 0.15 + i * 0.14 },
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 210,
+      damping: 15,
+      mass: 0.9,
+      delay: 0.25 + i * 0.16,
+    },
   }),
 };
 
@@ -30,17 +37,23 @@ export default function Stats() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-[2px] bg-neutral-900">
               {stats.map((s, i) => (
                 <div key={i} className="px-6 py-8 md:py-10 text-center bg-white">
-                  <motion.span
-                    className="block font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-[1.1] tabular-nums origin-center"
-                    custom={i}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.6 }}
-                    variants={stamp}
+                  <span
+                    className="block overflow-visible [perspective:600px]"
+                    aria-hidden="false"
                   >
-                    {s.display}
-                    <span className="text-emerald-700">{s.suffix}</span>
-                  </motion.span>
+                    <motion.span
+                      className="block font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-[1.1] tabular-nums origin-top"
+                      custom={i}
+                      initial="hidden"
+                      whileInView="show"
+                      viewport={{ once: true, amount: 0.6 }}
+                      variants={flap}
+                      style={{ transformPerspective: 600 }}
+                    >
+                      {s.display}
+                      <span className="text-emerald-700">{s.suffix}</span>
+                    </motion.span>
+                  </span>
                   <p className="text-xs md:text-sm text-neutral-500 mt-2 font-medium flex items-center justify-center gap-1.5">
                     <span className="text-emerald-700 text-[10px]">✦</span>
                     {s.label}
