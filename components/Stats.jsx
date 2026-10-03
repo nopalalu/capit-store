@@ -1,5 +1,6 @@
 "use client";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Reveal from "./Reveal";
 
 const stats = [
@@ -10,10 +11,18 @@ const stats = [
 ];
 
 export default function Stats() {
+  // Observer dipasang di strip (elemen statis, tidak ditransform) —
+  // pola ini yang terbukti jalan, lalu dipakai untuk menggerakkan angka.
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.4 });
+
   return (
     <section className="py-14 md:py-16">
       <Reveal>
-        <div className="rounded-[28px] border-2 border-neutral-900 bg-white shadow-[8px_8px_0_#1c1917] overflow-hidden">
+        <div
+          ref={ref}
+          className="rounded-[28px] border-2 border-neutral-900 bg-white shadow-[8px_8px_0_#1c1917] overflow-hidden"
+        >
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-[2px] bg-neutral-900">
             {stats.map((s, i) => (
               <div
@@ -25,11 +34,10 @@ export default function Stats() {
                   <motion.span
                     className="block font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-[1.1] tabular-nums"
                     initial={{ y: "110%" }}
-                    whileInView={{ y: "0%" }}
-                    viewport={{ once: true, amount: 0.7 }}
+                    animate={inView ? { y: "0%" } : undefined}
                     transition={{
                       duration: 0.7,
-                      delay: 0.25 + i * 0.13,
+                      delay: 0.2 + i * 0.13,
                       ease: [0.22, 1, 0.36, 1],
                     }}
                   >
@@ -40,10 +48,9 @@ export default function Stats() {
                 {/* Label: fade-in nyusul */}
                 <motion.p
                   className="text-xs md:text-sm text-neutral-500 mt-2 font-medium flex items-center justify-center gap-1.5"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.5, delay: 0.45 + i * 0.13 }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={inView ? { opacity: 1, y: 0 } : undefined}
+                  transition={{ duration: 0.5, delay: 0.4 + i * 0.13 }}
                 >
                   <span className="text-emerald-700 text-[10px]">✦</span>
                   {s.label}
