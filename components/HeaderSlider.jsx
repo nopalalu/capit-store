@@ -171,11 +171,11 @@ const HeaderSlider = () => {
                   </div>
                   {/* Visual */}
                   <div className="md:col-span-5 relative">
-                    <div className="relative mx-auto w-full max-w-[340px] md:max-w-[420px] px-4 pt-8 pb-10">
-                      {/* kartu belakang buat depth */}
+                    <div className="relative mx-auto w-full max-w-[340px] md:max-w-[420px] px-6 py-10">
+                      {/* kartu belakang buat depth — lebih besar + miring biar ngintip */}
                       <div
                         aria-hidden="true"
-                        className="absolute inset-x-10 top-12 bottom-14 rounded-[28px] bg-emerald-800 border-2 border-neutral-900 rotate-[5deg]"
+                        className="absolute inset-x-3 top-7 bottom-7 rounded-[32px] bg-emerald-800 border-2 border-neutral-900 rotate-[4deg]"
                       />
                       {/* kartu foto utama */}
                       <div className="relative rounded-[28px] border-2 border-neutral-900 bg-white shadow-[10px_10px_0_#1c1917] -rotate-2 overflow-hidden">
@@ -195,11 +195,8 @@ const HeaderSlider = () => {
                           />
                         </motion.div>
                       </div>
-                      <span className="absolute bottom-4 left-10 -rotate-6 whitespace-nowrap rounded-full bg-amber-300 text-neutral-900 text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-2 shadow-md border-2 border-neutral-900">
+                      <span className="absolute bottom-5 left-9 -rotate-6 whitespace-nowrap rounded-full bg-amber-300 text-neutral-900 text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-2 shadow-md border-2 border-neutral-900">
                         Koleksi Capit ✦
-                      </span>
-                      <span className="absolute top-2 right-6 rotate-6 rounded-full bg-white text-neutral-900 text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-2 shadow-md border-2 border-neutral-900">
-                        ✦ {slide.eyebrow}
                       </span>
                     </div>
                   </div>
