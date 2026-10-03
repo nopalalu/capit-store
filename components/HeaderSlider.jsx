@@ -171,10 +171,16 @@ const HeaderSlider = () => {
                   </div>
                   {/* Visual */}
                   <div className="md:col-span-5 relative">
-                    <div className="relative mx-auto w-full max-w-[340px] md:max-w-[400px]">
-                      <div className="overflow-hidden rounded-t-[999px] rounded-b-[28px] border-2 border-neutral-900 shadow-[10px_10px_0_#1c1917] bg-white">
+                    <div className="relative mx-auto w-full max-w-[340px] md:max-w-[420px] px-4 pt-8 pb-10">
+                      {/* kartu belakang buat depth */}
+                      <div
+                        aria-hidden="true"
+                        className="absolute inset-x-10 top-12 bottom-14 rounded-[28px] bg-emerald-800 border-2 border-neutral-900 rotate-[5deg]"
+                      />
+                      {/* kartu foto utama */}
+                      <div className="relative rounded-[28px] border-2 border-neutral-900 bg-white shadow-[10px_10px_0_#1c1917] -rotate-2 overflow-hidden">
                         <motion.div
-                          className="relative aspect-[4/5]"
+                          className="relative aspect-square"
                           initial={false}
                           animate={active ? { scale: 1 } : { scale: 1.08 }}
                           transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
@@ -185,12 +191,15 @@ const HeaderSlider = () => {
                             alt={slide.title}
                             fill
                             priority={index === 0}
-                            sizes="(max-width: 768px) 80vw, 400px"
+                            sizes="(max-width: 768px) 80vw, 420px"
                           />
                         </motion.div>
                       </div>
-                      <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 -rotate-3 whitespace-nowrap rounded-full bg-amber-300 text-neutral-900 text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-2 shadow-md border-2 border-neutral-900">
+                      <span className="absolute bottom-4 left-10 -rotate-6 whitespace-nowrap rounded-full bg-amber-300 text-neutral-900 text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-2 shadow-md border-2 border-neutral-900">
                         Koleksi Capit ✦
+                      </span>
+                      <span className="absolute top-2 right-6 rotate-6 rounded-full bg-white text-neutral-900 text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-2 shadow-md border-2 border-neutral-900">
+                        ✦ {slide.eyebrow}
                       </span>
                     </div>
                   </div>
