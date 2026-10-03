@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Kunci ke light mode: cegah browser auto-darken (yang bikin
+   background sel stats jadi gelap dan angka hitam tidak terbaca). */
+:root {
+  color-scheme: light;
+}
+
 /* Catatan: JANGAN pasang scroll-behavior: smooth secara global —
    itu bikin setiap pindah halaman (router.push) kelihatan "ketarik"
    ke atas karena animasi scroll ikut jalan. Yang butuh smooth
