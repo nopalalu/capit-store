@@ -52,9 +52,12 @@ export default function Testimonials() {
         accent="puas."
       />
       <Reveal>
-        <div className="relative bg-amber-50 border border-amber-200/60 rounded-3xl px-7 py-10 md:px-14 md:py-12 overflow-hidden">
-          <span className="font-display text-[120px] leading-none text-amber-200/70 absolute -top-4 left-6 select-none" aria-hidden="true">
+        <div className="relative bg-[#FAF6EC] border-2 border-neutral-900 rounded-[28px] shadow-[8px_8px_0_#1c1917] px-7 py-10 md:px-14 md:py-12 overflow-hidden">
+          <span className="font-display text-[120px] leading-none text-amber-300 absolute -top-4 left-6 select-none" aria-hidden="true">
             &ldquo;
+          </span>
+          <span className="absolute top-6 right-8 rotate-6 whitespace-nowrap rounded-full bg-amber-300 text-neutral-900 text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-2 shadow-md border-2 border-neutral-900 hidden sm:block">
+            Testimoni pelanggan ✦
           </span>
           <div className="relative min-h-[190px] md:min-h-[150px]">
             <AnimatePresence mode="wait" custom={dir}>
@@ -73,7 +76,7 @@ export default function Testimonials() {
                   {t.text}
                 </blockquote>
                 <figcaption className="mt-5 flex items-center gap-3">
-                  <span className="w-11 h-11 rounded-full bg-neutral-900 text-amber-50 flex items-center justify-center font-bold">
+                  <span className="w-11 h-11 rounded-full bg-amber-300 border-2 border-neutral-900 text-neutral-900 flex items-center justify-center font-bold">
                     {t.name.charAt(0)}
                   </span>
                   <span>
@@ -85,28 +88,34 @@ export default function Testimonials() {
             </AnimatePresence>
           </div>
           <div className="relative flex items-center justify-between mt-8">
-            <div className="flex gap-2">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setDir(i > index ? 1 : -1); setIndex(i); }}
-                  aria-label={`Testimoni ${i + 1}`}
-                  className={`h-2 rounded-full transition-all ${i === index ? "w-8 bg-neutral-900" : "w-2 bg-neutral-300 hover:bg-neutral-400"}`}
-                />
-              ))}
+            <div className="flex items-center gap-4">
+              <span className="font-display text-sm font-semibold tracking-[0.2em] text-neutral-900 tabular-nums" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+                <span className="text-neutral-400"> / {String(testimonials.length).padStart(2, "0")}</span>
+              </span>
+              <div className="flex gap-2">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => { setDir(i > index ? 1 : -1); setIndex(i); }}
+                    aria-label={`Testimoni ${i + 1}`}
+                    className={`h-2 rounded-full transition-all ${i === index ? "w-8 bg-neutral-900" : "w-2 bg-neutral-300 hover:bg-neutral-400"}`}
+                  />
+                ))}
+              </div>
             </div>
             <div className="flex gap-2">
               <button
                 onClick={() => go(-1)}
                 aria-label="Sebelumnya"
-                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition"
+                className="w-11 h-11 rounded-full border-2 border-neutral-900 bg-white flex items-center justify-center text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors"
               >
                 ←
               </button>
               <button
                 onClick={() => go(1)}
                 aria-label="Berikutnya"
-                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition"
+                className="w-11 h-11 rounded-full border-2 border-neutral-900 bg-white flex items-center justify-center text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors"
               >
                 →
               </button>

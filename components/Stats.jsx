@@ -24,9 +24,9 @@ function Counter({ to, suffix = "" }) {
   }, [inView, to]);
 
   return (
-    <span ref={ref}>
+    <span ref={ref} className="tabular-nums">
       {val.toLocaleString("id-ID")}
-      {suffix}
+      <span className="text-emerald-700">{suffix}</span>
     </span>
   );
 }
@@ -42,15 +42,23 @@ export default function Stats() {
   return (
     <section className="py-14 md:py-16">
       <Reveal>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-neutral-200 rounded-3xl overflow-hidden border border-neutral-200">
-          {stats.map((s, i) => (
-            <div key={i} className="bg-white px-6 py-8 md:py-10 text-center hover:bg-amber-50/60 transition-colors">
-              <p className="font-display text-3xl md:text-[40px] font-semibold text-emerald-900 leading-none">
-                <Counter to={s.to} suffix={s.suffix} />
-              </p>
-              <p className="text-xs md:text-sm text-neutral-500 mt-2.5 font-medium">{s.label}</p>
-            </div>
-          ))}
+        <div className="rounded-[28px] border-2 border-neutral-900 bg-white shadow-[8px_8px_0_#1c1917] overflow-hidden">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-[2px] bg-neutral-900">
+            {stats.map((s, i) => (
+              <div
+                key={i}
+                className="bg-white px-6 py-8 md:py-10 text-center hover:bg-amber-100 transition-colors duration-300"
+              >
+                <p className="font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-none">
+                  <Counter to={s.to} suffix={s.suffix} />
+                </p>
+                <p className="text-xs md:text-sm text-neutral-500 mt-3 font-medium flex items-center justify-center gap-1.5">
+                  <span className="text-emerald-700 text-[10px]">✦</span>
+                  {s.label}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </Reveal>
     </section>
