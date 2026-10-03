@@ -31,10 +31,19 @@ const stats = [
   },
 ];
 
+const fade = {
+  hidden: { opacity: 0 },
+  show: (i) => ({
+    opacity: 1,
+    transition: { duration: 0.5, delay: 0.15 + i * 0.1 },
+  }),
+};
+
 function StatCell({ s, i, inView }) {
   const [flipped, setFlipped] = useState(false);
   const reduce = useReducedMotion();
   const toggle = () => setFlipped((f) => !f);
+  const anim = inView ? "show" : "hidden";
 
   return (
     <motion.div
@@ -62,26 +71,28 @@ function StatCell({ s, i, inView }) {
         >
           ⟲
         </span>
-        <span className="block overflow-hidden pb-1">
-          <motion.span
-            className="block font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-[1.1] tabular-nums"
-            initial={{ y: "110%" }}
-            animate={inView ? { y: "0%" } : undefined}
-            transition={{
-              duration: 0.7,
-              delay: 0.2 + i * 0.13,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-          >
-            {s.display}
-            <span className="text-emerald-700">{s.suffix}</span>
-          </motion.span>
-        </span>
+        <motion.span
+          className="block font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-[1.1] tabular-nums"
+          custom={i}
+          initial="hidden"
+          animate={anim}
+          variants={fade}
+        >
+          {s.display}
+          <span className="text-emerald-700">{s.suffix}</span>
+        </motion.span>
         <motion.p
           className="text-xs md:text-sm text-neutral-500 mt-2 font-medium flex items-center justify-center gap-1.5"
-          initial={{ opacity: 0, y: 8 }}
-          animate={inView ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.5, delay: 0.4 + i * 0.13 }}
+          custom={i}
+          initial="hidden"
+          animate={anim}
+          variants={{
+            hidden: { opacity: 0 },
+            show: (j) => ({
+              opacity: 1,
+              transition: { duration: 0.5, delay: 0.3 + j * 0.1 },
+            }),
+          }}
         >
           <span className="text-emerald-700 text-[10px]">✦</span>
           {s.label}
