@@ -53,7 +53,7 @@ export default function Testimonials() {
       />
       <Reveal>
         <div className="relative bg-[#FAF6EC] border-2 border-neutral-900 rounded-[28px] shadow-[8px_8px_0_#1c1917] px-7 py-10 md:px-14 md:py-12 overflow-hidden">
-          <span className="font-display text-[120px] leading-none text-amber-300 absolute -top-4 left-6 select-none" aria-hidden="true">
+          <span className="font-display text-[120px] leading-none text-amber-300 absolute top-3 left-6 select-none" aria-hidden="true">
             &ldquo;
           </span>
           <span className="absolute top-6 right-8 rotate-6 whitespace-nowrap rounded-full bg-amber-300 text-neutral-900 text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-2 shadow-md border-2 border-neutral-900 hidden sm:block">

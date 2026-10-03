@@ -1,41 +1,12 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import Reveal from "./Reveal";
 
-function Counter({ to, suffix = "" }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
-  const [val, setVal] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    let raf;
-    const dur = 1400;
-    const start = performance.now();
-    const tick = (t) => {
-      const p = Math.min(1, (t - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setVal(Math.round(eased * to));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, to]);
-
-  return (
-    <span ref={ref} className="tabular-nums">
-      {val.toLocaleString("id-ID")}
-      <span className="text-emerald-700">{suffix}</span>
-    </span>
-  );
-}
-
 const stats = [
-  { to: 15000, suffix: "+", label: "Pasangan sandal terjual" },
-  { to: 98, suffix: "%", label: "Ulasan bintang 5" },
-  { to: 50, suffix: "+", label: "Model & varian warna" },
-  { to: 7, suffix: "", label: "Hari garansi tukar ukuran" },
+  { display: "15.000", suffix: "+", label: "Pasangan sandal terjual" },
+  { display: "98", suffix: "%", label: "Ulasan bintang 5" },
+  { display: "50", suffix: "+", label: "Model & varian warna" },
+  { display: "7", suffix: "", label: "Hari garansi tukar ukuran" },
 ];
 
 export default function Stats() {
@@ -49,13 +20,34 @@ export default function Stats() {
                 key={i}
                 className="bg-white px-6 py-8 md:py-10 text-center hover:bg-amber-100 transition-colors duration-300"
               >
-                <p className="font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-none">
-                  <Counter to={s.to} suffix={s.suffix} />
-                </p>
-                <p className="text-xs md:text-sm text-neutral-500 mt-3 font-medium flex items-center justify-center gap-1.5">
+                {/* Angka: slide-up dari balik mask, stagger per kolom */}
+                <span className="block overflow-hidden pb-1">
+                  <motion.span
+                    className="block font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-[1.1] tabular-nums"
+                    initial={{ y: "110%" }}
+                    whileInView={{ y: "0%" }}
+                    viewport={{ once: true, amount: 0.7 }}
+                    transition={{
+                      duration: 0.7,
+                      delay: 0.25 + i * 0.13,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    {s.display}
+                    <span className="text-emerald-700">{s.suffix}</span>
+                  </motion.span>
+                </span>
+                {/* Label: fade-in nyusul */}
+                <motion.p
+                  className="text-xs md:text-sm text-neutral-500 mt-2 font-medium flex items-center justify-center gap-1.5"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.5, delay: 0.45 + i * 0.13 }}
+                >
                   <span className="text-emerald-700 text-[10px]">✦</span>
                   {s.label}
-                </p>
+                </motion.p>
               </div>
             ))}
           </div>
