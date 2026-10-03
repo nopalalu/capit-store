@@ -104,7 +104,7 @@ export default function QuickView({ product, onClose }) {
                 </motion.button>
                 <motion.button
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => { onClose(); router.push("/product/" + product._id); window.scrollTo({ top: 0, behavior: "instant" }); }}
+                  onClick={() => { onClose(); router.push("/product/" + product._id); }}
                   className="flex-1 py-3 border-2 border-neutral-900 text-neutral-900 rounded-xl text-sm font-semibold hover:bg-neutral-900 hover:text-white transition"
                 >
                   Lihat Detail

@@ -17,24 +17,27 @@ const Product = () => {
 
     const [mainImage, setMainImage] = useState(null);
     const [productData, setProductData] = useState(null);
-
-    const fetchProductData = async () => {
-        const product = products.find((product) => product._id === id);
-        setProductData(product);
-    };
+    const [ready, setReady] = useState(false);
 
     useEffect(() => {
-        fetchProductData();
+        // Tampilkan skeleton minimal 450ms biar transisi kerasa mulus,
+        // bukan sekadar kedip atau teleport.
+        setReady(false);
+        setMainImage(null);
+        const product = products.find((product) => product._id === id);
+        setProductData(product || null);
+        const t = setTimeout(() => setReady(true), 450);
+        return () => clearTimeout(t);
     }, [id, products.length]);
 
-    if (!productData) return <ProductDetailSkeleton />;
+    if (!ready || !productData) return <ProductDetailSkeleton />;
 
     const inStock = productData.stock > 0;
 
     return (
         <>
             <Navbar />
-            <div className="px-6 md:px-16 lg:px-32 pt-8 pb-4 bg-white">
+            <div className="page-enter px-6 md:px-16 lg:px-32 pt-8 pb-4 bg-white">
                 <p className="text-xs text-neutral-400 mb-6">
                     <button onClick={() => router.push('/')} className="hover:text-neutral-700">Home</button>
                     <span className="mx-2">/</span>
