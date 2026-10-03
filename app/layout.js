@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
 import MotionProvider from "@/components/MotionProvider";
 import Preloader from "@/components/Preloader";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500", "600", "700"] })
 const fraunces = Fraunces({
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body className={`${outfit.className} ${fraunces.variable} antialiased text-neutral-800 bg-white`} >
           <Preloader />
+          <ScrollToTop />
           <Toaster />
           <MotionProvider>
             <AppContextProvider>
