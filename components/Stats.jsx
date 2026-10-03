@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import Reveal from "./Reveal";
 import Tilt from "./Tilt";
 
@@ -33,28 +32,25 @@ const stats = [
 
 function StatCell({ s }) {
   const [flipped, setFlipped] = useState(false);
-  const reduce = useReducedMotion();
   const toggle = () => setFlipped((f) => !f);
 
   return (
-    <motion.div
+    <div
       role="button"
       tabIndex={0}
       aria-label={`${s.label}. Klik untuk ${flipped ? "tutup" : "lihat"} detail.`}
       onClick={toggle}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
+        if (e.key === "Enter") {
           e.preventDefault();
           toggle();
         }
       }}
-      className="relative cursor-pointer [transform-style:preserve-3d] outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-inset"
-      initial={false}
-      animate={{ rotateY: flipped ? 180 : 0 }}
-      transition={{ duration: reduce ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="relative cursor-pointer [transform-style:preserve-3d] transition-transform duration-500 ease-out motion-reduce:transition-none outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-inset"
+      style={{ transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
     >
       {/* sisi depan */}
-      <div className="px-6 py-8 md:py-10 text-center [backface-visibility:hidden] hover:bg-amber-100 transition-colors duration-300">
+      <div className="px-6 py-8 md:py-10 text-center bg-white [backface-visibility:hidden] hover:bg-amber-100 transition-colors duration-300">
         <span
           className="absolute top-2.5 right-3 text-neutral-300 text-base leading-none select-none"
           aria-hidden="true"
@@ -81,7 +77,7 @@ function StatCell({ s }) {
           Ketuk untuk kembali
         </span>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -90,9 +86,8 @@ export default function Stats() {
     <section className="py-14 md:py-16">
       <Reveal>
         <Tilt max={4} perspective={1400} className="will-change-transform">
-          <div className="rounded-[28px] border-2 border-neutral-900 bg-white shadow-[8px_8px_0_#1c1917] overflow-hidden"
-          >
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-[2px] bg-neutral-900 [perspective:1600px]">
+          <div className="rounded-[28px] border-2 border-neutral-900 bg-white shadow-[8px_8px_0_#1c1917] overflow-hidden">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-[2px] bg-neutral-900 [perspective:1600px] [transform-style:preserve-3d]">
               {stats.map((s, i) => (
                 <StatCell key={i} s={s} />
               ))}
