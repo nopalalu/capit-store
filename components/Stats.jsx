@@ -1,6 +1,6 @@
 "use client";
-import { useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import Reveal from "./Reveal";
 import Tilt from "./Tilt";
 
@@ -31,19 +31,10 @@ const stats = [
   },
 ];
 
-const fade = {
-  hidden: { opacity: 0 },
-  show: (i) => ({
-    opacity: 1,
-    transition: { duration: 0.5, delay: 0.15 + i * 0.1 },
-  }),
-};
-
-function StatCell({ s, i, inView }) {
+function StatCell({ s }) {
   const [flipped, setFlipped] = useState(false);
   const reduce = useReducedMotion();
   const toggle = () => setFlipped((f) => !f);
-  const anim = inView ? "show" : "hidden";
 
   return (
     <motion.div
@@ -71,32 +62,14 @@ function StatCell({ s, i, inView }) {
         >
           ⟲
         </span>
-        <motion.span
-          className="block font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-[1.1] tabular-nums"
-          custom={i}
-          initial="hidden"
-          animate={anim}
-          variants={fade}
-        >
+        <span className="block font-display text-4xl md:text-[52px] font-semibold text-neutral-900 leading-[1.1] tabular-nums">
           {s.display}
           <span className="text-emerald-700">{s.suffix}</span>
-        </motion.span>
-        <motion.p
-          className="text-xs md:text-sm text-neutral-500 mt-2 font-medium flex items-center justify-center gap-1.5"
-          custom={i}
-          initial="hidden"
-          animate={anim}
-          variants={{
-            hidden: { opacity: 0 },
-            show: (j) => ({
-              opacity: 1,
-              transition: { duration: 0.5, delay: 0.3 + j * 0.1 },
-            }),
-          }}
-        >
+        </span>
+        <p className="text-xs md:text-sm text-neutral-500 mt-2 font-medium flex items-center justify-center gap-1.5">
           <span className="text-emerald-700 text-[10px]">✦</span>
           {s.label}
-        </motion.p>
+        </p>
       </div>
       {/* sisi belakang */}
       <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-emerald-800 flex flex-col items-center justify-center gap-2 px-5 text-center">
@@ -113,20 +86,15 @@ function StatCell({ s, i, inView }) {
 }
 
 export default function Stats() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.4 });
-
   return (
     <section className="py-14 md:py-16">
       <Reveal>
         <Tilt max={4} perspective={1400} className="will-change-transform">
-          <div
-            ref={ref}
-            className="rounded-[28px] border-2 border-neutral-900 bg-white shadow-[8px_8px_0_#1c1917] overflow-hidden"
+          <div className="rounded-[28px] border-2 border-neutral-900 bg-white shadow-[8px_8px_0_#1c1917] overflow-hidden"
           >
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-[2px] bg-neutral-900 [perspective:1600px]">
               {stats.map((s, i) => (
-                <StatCell key={i} s={s} i={i} inView={inView} />
+                <StatCell key={i} s={s} />
               ))}
             </div>
           </div>
