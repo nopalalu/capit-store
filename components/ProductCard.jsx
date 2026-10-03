@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useAppContext } from '@/context/AppContext';
 import { motion } from "framer-motion";
 import QuickView from "./QuickView";
+import Tilt from "./Tilt";
 
 const ProductCard = ({ product, index = 0 }) => {
 
@@ -18,6 +19,7 @@ const ProductCard = ({ product, index = 0 }) => {
 
     return (
         <>
+            <Tilt max={5} className="w-full">
             <motion.div
                 initial={{ opacity: 0, y: 32, scale: 0.96 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -28,7 +30,7 @@ const ProductCard = ({ product, index = 0 }) => {
                 }}
                 viewport={{ once: true, amount: 0.15 }}
                 onClick={go}
-                className="group flex flex-col w-full cursor-pointer rounded-2xl border-2 border-neutral-900 bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[7px_7px_0_#1c1917]"
+                className="group flex flex-col w-full h-full cursor-pointer rounded-2xl border-2 border-neutral-900 bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[7px_7px_0_#1c1917]"
             >
                 <div className="relative w-full aspect-square overflow-hidden bg-neutral-100 border-b-2 border-neutral-900">
                     <img
@@ -85,6 +87,7 @@ const ProductCard = ({ product, index = 0 }) => {
                     </div>
                 </div>
             </motion.div>
+            </Tilt>
             <QuickView product={quickView ? product : null} onClose={() => setQuickView(false)} />
         </>
     )
