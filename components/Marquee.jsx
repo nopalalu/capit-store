@@ -11,7 +11,7 @@ const items = [
 export default function Marquee() {
   const row = [...items, ...items];
   return (
-    <div className="marquee overflow-hidden my-4 md:my-6 -rotate-1 scale-[1.02]" aria-hidden="true">
+    <div className="marquee overflow-hidden my-4 md:my-6" aria-hidden="true">
       <div className="bg-neutral-900 py-3 border-y-2 border-neutral-900">
         <div className="marquee-track flex w-max items-center whitespace-nowrap">
           {row.map((t, i) => (
